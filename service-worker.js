@@ -3,6 +3,7 @@ const CACHE_NAME = 'audiobook-creator-v3'; // Increment cache version for a clea
 // --- KEY CHANGE: Only cache the small "app shell" files on install ---
 const urlsToCache = [
   './',
+  './index.html',
   './tts_app.html',
   './main.js',
   './manifest.json',
