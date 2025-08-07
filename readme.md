@@ -2,6 +2,8 @@
 
 A lightweight, offline-first Text-to-Speech web application that runs entirely in the browser. This Progressive Web App (PWA) is designed to be installed on a mobile device, allowing users to generate audio from text without needing a constant internet connection.
 
+Installable mobile app available at [https://neshani.github.io/Kitten-Offline-TTS/tts_app.html](https://neshani.github.io/Kitten-Offline-TTS/tts_app.html).
+
 ![Screenshot of Audiobook Creator](./screenshot.png)
 
 ## About the Project
