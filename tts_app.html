@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audiobook Creator</title>
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status.ready {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 Audiobook Creator</h1>
+        
+        <div id="status" class="status loading">Loading AI model... (this may take a moment)</div>
+
+        <div id="text-input-area" style="display: none;">
+            <h3>Enter Text:</h3>
+            <textarea id="textInput" placeholder="Type or share text to convert to an audiobook."></textarea>
+            
+            <div style="margin: 15px 0;">
+                <label for="voiceSelect" style="display: block; margin-bottom: 5px; font-weight: bold;">Voice:</label>
+                <select id="voiceSelect" style="padding: 8px; border-radius: 5px; border: 2px solid #ddd; font-size: 14px;">
+                    <option value="expr-voice-2-m" selected>Expression Voice 2 (Male)</option>
+                    <option value="expr-voice-2-f">Expression Voice 2 (Female)</option>
+                    <option value="expr-voice-3-m">Expression Voice 3 (Male)</option>
+                    <option value="expr-voice-3-f">Expression Voice 3 (Female)</option>
+                    <option value="expr-voice-4-m">Expression Voice 4 (Male)</option>
+                    <option value="expr-voice-4-f">Expression Voice 4 (Female)</option>
+                    <option value="expr-voice-5-m">Expression Voice 5 (Male)</option>
+                    <option value="expr-voice-5-f">Expression Voice 5 (Female)</option>
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 20px; margin: 15px 0;">
+                <div style="flex: 1;">
+                    <label for="speedSlider" style="display: block; margin-bottom: 5px; font-weight: bold;">Speed: <span id="speedValue">1.0</span></label>
+                    <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0"
+                           style="width: 100%;" oninput="updateSpeedValue(this.value)">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                        <span>0.5x (Slow)</span>
+                        <span>1.0x (Normal)</span>
+                        <span>2.0x (Fast)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="processing-controls" style="display: none;">
+            <button id="generate-all-btn">Generate All Audio</button>
+            <div id="progress-area" style="margin-top: 1rem;">
+                <progress id="progress-bar" value="0" max="100" style="width: 100%;"></progress>
+                <p id="progress-label"></p>
+            </div>
+        </div>
+
+        <div id="results-area">
+            <h3>Generated Audio</h3>
+            <ul id="audio-list">
+                <!-- Audio players and download links will be added here -->
+            </ul>
+        </div>
+    </div>
+
+<script>
+    function updateSpeedValue(value) {
+        document.getElementById('speedValue').textContent = value;
+    }
+</script>
+
+<!-- LOAD THE LIBRARY FIRST (using the simple .js version) -->
+<script src="./ort-dist/ort.min.js"></script>
+<script type="module" src="./phonemizer-dist/phonemizer.js"></script>
+<!-- THEN, LOAD OUR SCRIPT, WHICH WILL USE THE GLOBAL 'ort' OBJECT -->
+<script type="module" src="./main.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').then(registration => {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, err => {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
